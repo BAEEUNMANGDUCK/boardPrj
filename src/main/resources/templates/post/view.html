@@ -52,10 +52,9 @@
                     <legend class="skip_info">댓글 입력</legend>
                     <div class="cm_input">
                         <p><textarea id="content" name="content" onkeyup="countingLength(this);"  cols="90" rows="4" placeholder="댓글을 입력해 주세요."></textarea></p>
-                        <span><button type="button" class="btn" onclick="saveComment();">등록</button><i id="counter">0/300자</i></span>
+                        <span><button type="button" class="btns" onclick="saveComment();">등록</button><i id="counter">0/300자</i></span>
                     </div>
                     <div class="cm_list">
-
                     </div>
                 </fieldset>
             </div>
@@ -90,6 +89,11 @@
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+
+        window.onload = () => {
+            findAllComment();
+        }
+
         //게시글 삭제
         function deletePost(){
             const id = [[ ${post.id} ]]
@@ -125,7 +129,7 @@
             const content = document.getElementById("content");
             isValid(content, '댓글');
 
-            const postId = [[ ${post.id}]];
+            const postId = [[ ${post.id} ]];
             const params = {
                 postId : postId,
                 content : content.value,
@@ -144,7 +148,7 @@
                     // 수정
                     alert('저장되었습니다.');
                     content.value = '';
-                    content.getElementById('counter').innerHTML = '0/300자';
+                    document.getElementById('counter').innerHTML = '0/300자';
                     findAllComment();
                 },
                 error: function (request, status, error){
@@ -153,9 +157,7 @@
             })
         }
 
-        window.onload = () => {
-            findAllComment();
-        }
+
 
         // 전체 댓글 조회
         function findAllComment(){
@@ -163,7 +165,7 @@
             const postId = [[ ${post.id} ]]
 
             $.ajax({
-                url : `posts/${postId}/comments`,
+                url : `/posts/${postId}/comments`,
                 type : 'get',
                 dataType : 'json',
                 async : false,
@@ -250,7 +252,7 @@
             }
 
             $.ajax({
-                url : `posts/${postId}/comments/${id}`,
+                url : `/posts/${postId}/comments/${id}`,
                 type : 'patch',
                 contentType : 'application/json; charset=utf-8',
                 dataType : 'json',
@@ -274,7 +276,7 @@
             const postId = [[ ${post.id}]];
 
             $.ajax({
-                url: `posts/${postId}/comments/${id}`,
+                url: `/posts/${postId}/comments/${id}`,
                 type: 'delete',
                 dataType: 'json',
                 async: false,

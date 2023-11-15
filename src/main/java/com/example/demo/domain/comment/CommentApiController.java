@@ -40,7 +40,7 @@ public class CommentApiController {
 
     // 댓글 삭제
 
-    @DeleteMapping("/post/{postId}/comments/{id}")
+    @DeleteMapping("/posts/{postId}/comments/{id}")
     public Long deleteComment(@PathVariable final Long postId, @PathVariable final Long id){
         return commentService.deleteComment(id);
     }
